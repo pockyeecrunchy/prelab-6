@@ -16,7 +16,7 @@ typedef unsigned char byte;
 
 const string NAME = "Program Written by Oscar Lan";
 const string SCHOOL = "Broome Community College";
-const string LAB = "Module 5 Lab - Hash Tables ";
+const string LAB = "Module Lab 6 – Stacks";
 
 #define DASH '-'
 #define STAR '*'

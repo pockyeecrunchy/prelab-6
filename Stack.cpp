@@ -21,7 +21,13 @@ stackType::~stackType()
 //Method InitializeStack
 void stackType::InitializeStack()
 {
-    //set counter to 0
+    // Set top pointer to NULL
+    pTop = nullptr;
+}
+
+void stackType::ResetCounter()
+{
+    // Set counter to 0
     _counter = 0;
 }
 

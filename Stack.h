@@ -6,6 +6,7 @@
 struct record
 {
     char symbol;
+    double number; //doing this for the extra credit. 
 };
 
 // Structure: node

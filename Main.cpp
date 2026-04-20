@@ -106,6 +106,87 @@ int main() {
 
     //close the output file 
     CloseFiles(fin, fout);
+
+    // ---------------- EXTRA CREDIT ---------------- //
+
+    // (1) Re-open files
+    // (2) Read postfix + original lines
+    // (3) Evaluate using stack
+    // (4) Write to ExtraCreditOutput.txt
+
+    // ---------------------------------------------- //
+
+    ifstream extraCredit;
+    ifstream originalFile;
+    ofstream extraOut;
+
+    extraCredit.open("Output.txt");
+    originalFile.open("Input.txt");
+    extraOut.open("ExtraCreditOutput.txt");
+
+    if (!extraCredit || !originalFile)
+    {
+        cout << "There is an error opening the extra credit files!\n";
+        return 1;
+    }
+
+    double tempA, tempB, tempAnswer;
+    string originalLine;
+
+    int lineNumber = 1;
+
+    while (getline(originalFile, originalLine) && getline(extraCredit, data))
+    {
+        extraOut << "Line " << lineNumber << ": " << originalLine << endl;
+        extraOut << "ANSWER = ";
+
+        for (int index = 0; index < data.length(); index++)
+        {
+            tempChar = data[index];
+
+            if (tempChar == ' ')
+                continue;
+
+            if (tempChar >= '0' && tempChar <= '9')
+            {
+                pTemp = new node;
+                pTemp->data.number = tempChar - '0';
+                pTemp->pNext = nullptr;
+
+                stack.Push(pTemp);
+            }
+
+            else
+            {
+
+                tempB = stack.GetTop()->data.number;
+                stack.Pop();
+
+                tempA = stack.GetTop()->data.number;
+                stack.Pop();
+
+                tempAnswer = PerformMath(tempChar, tempA, tempB);
+
+                pTemp = new node;
+                pTemp->data.number = tempAnswer;
+                pTemp->pNext = nullptr;
+
+                stack.Push(pTemp);
+            }
+
+        }
+
+        if (!stack.StackIsEmpty())
+        {
+            extraOut << stack.GetTop()->data.number << endl << endl;
+            stack.Pop();
+        }
+
+        lineNumber++;
+    }
+
+    CloseFiles(extraCredit, originalFile, extraOut);
+
     return 0;
 }
 
