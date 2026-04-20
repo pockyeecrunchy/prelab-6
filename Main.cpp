@@ -120,57 +120,71 @@ int main() {
     ifstream originalFile;
     ofstream extraOut;
 
+    // Open the postfix, original input, output files for extra credit result
     extraCredit.open("Output.txt");
     originalFile.open("Input.txt");
     extraOut.open("ExtraCreditOutput.txt");
 
+    // verify if input files opened successfully
     if (!extraCredit || !originalFile)
     {
         cout << "There is an error opening the extra credit files!\n";
         return 1;
     }
 
+    // Variables to store operands and computed result using temp
     double tempA, tempB, tempAnswer;
     string originalLine;
 
+    // Line counter for labeling output
     int lineNumber = 1;
 
+    // Read corresponding lines from original and postfix files
     while (getline(originalFile, originalLine) && getline(extraCredit, data))
     {
+        // Output the original infix expression with line number
         extraOut << "Line " << lineNumber << ": " << originalLine << endl;
+
+        // Prepare to output evaluated result
         extraOut << "ANSWER = ";
 
+        // Loop through each character in the postfix expression
         for (int index = 0; index < data.length(); index++)
         {
-            tempChar = data[index];
+            tempChar = data[index];                         // stores current character 
 
             if (tempChar == ' ')
-                continue;
+                continue;                                   // skip the space!
 
             if (tempChar >= '0' && tempChar <= '9')
             {
-                pTemp = new node;
-                pTemp->data.number = tempChar - '0';
-                pTemp->pNext = nullptr;
+                pTemp = new node;                           // Allocate new node
+                pTemp->data.number = tempChar - '0';        // Convert char to integer value
+                pTemp->pNext = nullptr;                     // Initialize next pointer 
 
-                stack.Push(pTemp);
+                stack.Push(pTemp);                          // Push the number into stack!
             }
 
+            // If the character is an operator, please perform the calculation
             else
             {
-
+                // Pop top value (right operand)
                 tempB = stack.GetTop()->data.number;
                 stack.Pop();
 
+                // Pop next value (left operand)
                 tempA = stack.GetTop()->data.number;
                 stack.Pop();
 
+                // Perform the operation using the two operands
                 tempAnswer = PerformMath(tempChar, tempA, tempB);
 
+                // Create new node with result
                 pTemp = new node;
                 pTemp->data.number = tempAnswer;
                 pTemp->pNext = nullptr;
 
+                // We will push result back onto stack
                 stack.Push(pTemp);
             }
 
@@ -178,13 +192,15 @@ int main() {
 
         if (!stack.StackIsEmpty())
         {
-            extraOut << stack.GetTop()->data.number << endl << endl;
-            stack.Pop();
+            //This is the output result
+            extraOut << stack.GetTop()->data.number << endl << endl;    
+            stack.Pop();                                     // Remove result from stack
         }
 
-        lineNumber++;
+        lineNumber++;                                        // Increment line counter
     }
 
+    // Close all extra credit file streams
     CloseFiles(extraCredit, originalFile, extraOut);
 
     return 0;
